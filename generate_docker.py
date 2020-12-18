@@ -4,7 +4,7 @@
 """
 
 import argparse
-from configuration import ConfigurationInfo
+from configuration import ConfigurationSoilmaskRatio as ConfigurationInfo
 
 # The template file name for Dockerfile
 DOCKERFILE_TEMPLATE_FILE_NAMES = ["Dockerfile.template"]
