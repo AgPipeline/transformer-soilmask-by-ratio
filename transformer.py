@@ -162,7 +162,8 @@ class SoilmaskByRatio(algorithm.Algorithm):
         # pylint: disable=no-self-use
         parser.add_argument('--out_file', type=str, help='the path to save the masked file to')
         parser.add_argument('--ratio', type=float, default=GREEN_RED_RATIO,
-                            help='the lower bound ratio value of green-to-red pixel value to be considered plant (vs. soil)')
+                            help='the lower bound decimal value of green-to-red ratio to be considered plant (eg: 0.75 or 1.2)' \
+                                 ' default %s' % str(GREEN_RED_RATIO))
 
     def check_continue(self, environment: Environment, check_md: dict, transformer_md: dict, full_md: list) -> tuple:
         """Checks if conditions are right for continuing processing

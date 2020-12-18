@@ -10,10 +10,10 @@ class ConfigurationSoilmaskRatio(Configuration):
     transformer_version = '1.0'
 
     # The transformer description
-    transformer_description = 'Soil masks images through gree:red ratio comparison'
+    transformer_description = 'Soil masks images through green:red ratio comparison'
 
     # Short name of the transformer
-    transformer_name = 'soilmask'
+    transformer_name = 'SoilmaskRatio'
 
     # The sensor associated with the transformer
     transformer_sensor = 'stereoTop'
