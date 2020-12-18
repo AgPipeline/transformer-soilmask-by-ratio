@@ -91,13 +91,6 @@ class __internal__:
         mask = np.zeros_like(b_channel)
         mask[sub_img] = MAX_PIXEL_VAL
 
-        #blur = cv2.blur(mask, (kernel_size, kernel_size))
-        #pix = np.array(blur)
-        #sub_mask = pix > 128
-
-        #mask_1 = np.zeros_like(b_channel)
-        #mask_1[sub_mask] = MAX_PIXEL_VAL
-
         return mask
 
     @staticmethod
