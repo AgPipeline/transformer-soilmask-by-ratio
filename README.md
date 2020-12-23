@@ -1,4 +1,4 @@
-[![license](https://img.shields.io/badge/license-BSD%203-green?logo=Open-Source-Initiative)](https://github.com/AgPipeline/transformer-soilmask-by-ratio/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/license-BSD%203-green?logo=Open-Source-Initiative)](https://github.com/AgPipeline/transformer-soilmask-by-ratio/blob/main/LICENSE)
 
 [![Enforcing testing](https://github.com/AgPipeline/transformer-soilmask-by-ratio/workflows/Enforcing%20testing/badge.svg)](https://github.com/AgPipeline/transformer-soilmask-by-ratio/actions?query=workflow%3A%22Enforcing+testing%22)
 [![testing](https://github.com/AgPipeline/transformer-soilmask-by-ratio/workflows/Testing%20Docker%20image/badge.svg)](https://github.com/AgPipeline/transformer-soilmask-by-ratio/actions?query=workflow%3A%22Testing+Docker+image%22)
