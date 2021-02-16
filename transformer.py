@@ -237,10 +237,10 @@ class SoilmaskByRatio(algorithm.Algorithm):
                 if environment.args.out_file:
                     rgb_mask_tif = environment.args.out_file
                     if not os.path.dirname(rgb_mask_tif):
-                        rgb_mask_tif = os.path.join(check_md['working_folder'], rgb_mask_tif)
+                        rgb_mask_tif = os.path.join(check_md.working_folder, rgb_mask_tif)
                 else:
                     # Use the original name
-                    rgb_mask_tif = os.path.join(check_md['working_folder'], __internal__.get_maskfilename(one_file))
+                    rgb_mask_tif = os.path.join(check_md.working_folder, __internal__.get_maskfilename(one_file))
 
                 # Create the mask file
                 logging.debug("Creating mask file '%s'", rgb_mask_tif)

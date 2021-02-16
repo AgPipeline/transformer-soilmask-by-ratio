@@ -1,7 +1,8 @@
 # Version 1.0 template-transformer-simple 
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 LABEL maintainer="Chris Schnaufer <schnaufer@arizona.edu>"
+ENV DEBIAN_FRONTEND noninteractive
 
 # Add user
 RUN useradd -u 49044 extractor \
@@ -13,11 +14,11 @@ RUN chown -R extractor /home/extractor \
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
-        python3.7 \
+        python3.8 \
         python3-pip && \
-    ln -sfn /usr/bin/python3.7 /usr/bin/python && \
-    ln -sfn /usr/bin/python3.7 /usr/bin/python3 && \
-    ln -sfn /usr/bin/python3.7m /usr/bin/python3m && \
+    ln -sfn /usr/bin/python3.8 /usr/bin/python && \
+    ln -sfn /usr/bin/python3.8 /usr/bin/python3 && \
+    ln -sfn /usr/bin/python3.8m /usr/bin/python3m && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -34,13 +35,13 @@ RUN apt-get update && \
         libgdal-dev  \
         gcc \
         g++ \
-        python3.7-dev && \
+        python3.8-dev && \
     python3 -m pip install --upgrade --no-cache-dir \
         wheel && \
     python3 -m pip install --upgrade --no-cache-dir \
         numpy && \
     python3 -m pip install --upgrade --no-cache-dir \
-        pygdal==2.2.3.* && \
+        pygdal==3.0.4.* && \
     apt-get remove -y \
         libgdal-dev \
         gcc \
