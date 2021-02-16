@@ -4,6 +4,7 @@ on:
     branches:
       - master
       - develop
+      - ubuntu20.04
   pull_request:
     branches:
       - master
@@ -32,10 +33,10 @@ jobs:
     steps:
       - name: Current python version
         run: python3 --version || echo python3 not installed
-      - name: Install Python 3.7
+      - name: Install Python 3.8
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7'
+          python-version: '3.8'
       - name: Updated python version
         run: python3 --version
       - name: PYTHONPATH environment variable
