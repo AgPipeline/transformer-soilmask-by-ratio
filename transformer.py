@@ -11,6 +11,7 @@ import cv2
 
 from agpypeline import algorithm, entrypoint, geoimage
 from agpypeline.environment import Environment
+from agpypeline.checkmd import CheckMD
 
 from configuration import ConfigurationSoilmaskRatio
 
@@ -159,7 +160,7 @@ class SoilmaskByRatio(algorithm.Algorithm):
                             help='the lower bound decimal value of green-to-red ratio to be considered plant (eg: 0.75 or 1.2)' \
                                  ' default %s' % str(GREEN_RED_RATIO))
 
-    def check_continue(self, environment: Environment, check_md: dict, transformer_md: dict, full_md: list) -> tuple:
+    def check_continue(self, environment: Environment, check_md: CheckMD, transformer_md: dict, full_md: list) -> tuple:
         """Checks if conditions are right for continuing processing
         Arguments:
             environment: instance of environment class
@@ -174,8 +175,8 @@ class SoilmaskByRatio(algorithm.Algorithm):
         result = {'code': -1002, 'message': "No TIFF files were specified for processing"}
 
         # Ensure we have a TIFF file
-        if check_md and 'list_files' in check_md:
-            files = check_md['list_files']()
+        if check_md:
+            files = check_md.get_list_files()
             try:
                 for one_file in files:
                     ext = os.path.splitext(one_file)[1].lower()
@@ -193,7 +194,7 @@ class SoilmaskByRatio(algorithm.Algorithm):
 
         return (result['code'], result['error']) if 'error' in result else (result['code'])
 
-    def perform_process(self, environment: Environment, check_md: dict, transformer_md: dict, full_md: list) -> dict:
+    def perform_process(self, environment: Environment, check_md: CheckMD, transformer_md: dict, full_md: list) -> dict:
         """Performs the processing of the data
         Arguments:
             environment: instance of environment class
@@ -209,7 +210,7 @@ class SoilmaskByRatio(algorithm.Algorithm):
 
         # Loop through the files
         try:
-            for one_file in check_md['list_files']():
+            for one_file in check_md.get_list_files():
                 # Check file by type
                 ext = os.path.splitext(one_file)[1].lower()
                 if ext not in self.supported_file_ext:
@@ -236,10 +237,10 @@ class SoilmaskByRatio(algorithm.Algorithm):
                 if environment.args.out_file:
                     rgb_mask_tif = environment.args.out_file
                     if not os.path.dirname(rgb_mask_tif):
-                        rgb_mask_tif = os.path.join(check_md['working_folder'], rgb_mask_tif)
+                        rgb_mask_tif = os.path.join(check_md.working_folder, rgb_mask_tif)
                 else:
                     # Use the original name
-                    rgb_mask_tif = os.path.join(check_md['working_folder'], __internal__.get_maskfilename(one_file))
+                    rgb_mask_tif = os.path.join(check_md.working_folder, __internal__.get_maskfilename(one_file))
 
                 # Create the mask file
                 logging.debug("Creating mask file '%s'", rgb_mask_tif)
