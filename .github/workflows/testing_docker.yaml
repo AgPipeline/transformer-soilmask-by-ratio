@@ -22,16 +22,28 @@ jobs:
     steps:
       - name: Fetch source code
         uses: actions/checkout@v2
+      - name: Current python version
+        run: python3 --version || echo python3 not installed
+      - name: Install Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Updated python version
+        run: python3 --version
+      - name: Install python dependencies
+        run: |
+             python3 -m pip install -U pip
+             python3 -m pip install -U numpy Pillow
       - name: Create folders
         run: |
              mkdir ./inputs && chmod 777 ./inputs
              mkdir ./outputs && chmod 777 ./outputs
+             mkdir -p test_data
       - name: Download testing data files
         run: |
-             curl -X GET https://de.cyverse.org/dl/d/3CBFD03C-C82E-4EDE-A8E5-DD4DBD45C696/orthomosaic.tif > inputs/orthomosaic.tif
-             curl -X GET https://de.cyverse.org/dl/d/FD32B0CE-DBAB-4A44-B8A6-0E9AA4555A31/experiment.yaml > inputs/experiment.yaml
-             mkdir -p test_data
-             curl -X GET https://de.cyverse.org/dl/d/1A53FC00-36B7-4695-8B8C-F2A946E67D1D/orthomosaic_mask_ratio.tif > test_data/orthomosaic_mask.tif
+             curl -X GET "https://de.cyverse.org/dl/d/3CBFD03C-C82E-4EDE-A8E5-DD4DBD45C696/orthomosaic.tif" > inputs/orthomosaic.tif
+             curl -X GET "https://de.cyverse.org/dl/d/FD32B0CE-DBAB-4A44-B8A6-0E9AA4555A31/experiment.yaml" > inputs/experiment.yaml
+             curl -X GET "https://de.cyverse.org/dl/d/1A53FC00-36B7-4695-8B8C-F2A946E67D1D/orthomosaic_mask_ratio.tif" > test_data/orthomosaic_mask.tif
       - name: Folder contents
         run: |
              echo "Current folder" && ls -l
@@ -55,7 +67,7 @@ jobs:
              chmod +x "./.github/workflows/docker_test_check.sh"
              "./.github/workflows/docker_test_check.sh"
       - name: Data quality check
-        run: if [[ "$(diff './test_data/orthomosaic_mask.tif' './outputs/orthomosaic_mask.tif')" == "" ]]; then echo "Test soilmask content matches expected"; exit 0; else echo "Error - soilmask contents mismatch from test_data/orthomosaicmask.tif"; diff './test_data/orthomosaic_mask.tif' './outputs/orthomosaic_mask.tif'; exit 1; fi;
+        run: python3 tests/compare_image_pixels.py './test_data/orthomosaic_mask.tif' './outputs/orthomosaic_mask.tif'
 
   artifact_cleanup:
     runs-on: ubuntu-latest
