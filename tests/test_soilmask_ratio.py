@@ -6,6 +6,7 @@ import re
 import json
 import subprocess
 import numpy as np
+import PIL.Image
 from osgeo import gdal
 
 # The name of the source file to test and it's path
@@ -140,6 +141,48 @@ def test_ratio_command_line():
 
     command_line = [SOURCE_PATH, '--working_space', working_space, '--ratio', ratio_value,
                     '--out_file', orthomosaic_mask_name, source_image]
+    subprocess.run(command_line, check=True)
+
+    # Check that the expected files were created
+    for expected_file in [result_name, orthomosaic_mask_name]:
+        assert os.path.exists(os.path.join(working_space, expected_file))
+
+    # Inspect the created files
+    with open(os.path.join(working_space, result_name)) as in_file:
+        res = json.load(in_file)
+        assert 'code' in res
+        assert res['code'] == 0
+
+    img = gdal.Open(os.path.join(working_space, orthomosaic_mask_name)).ReadAsArray()
+    assert img is not None
+    assert isinstance(img, np.ndarray)
+
+
+def test_ratio_plain_tiff():
+    """Runs the command line for a non-GeoTiff file and tests the result"""
+    orthomosaic_mask_name = 'plain_mask.tif'
+    result_name = 'result.json'
+    source_image = os.path.join(TESTING_FILE_PATH, 'orthomosaic.tif')
+    assert os.path.exists(source_image)
+
+    # Create a non-georeferenced tiff image from the source image
+    plain_tiff_image = os.path.join(TESTING_FILE_PATH, 'plain.tif')
+    if os.path.exists(plain_tiff_image):
+        os.unlink(plain_tiff_image)
+    img = PIL.Image.open(source_image)
+    img_array = np.array(img)
+    result = PIL.Image.fromarray(img_array)
+    result.save(plain_tiff_image)
+
+    # Setup parameters for running the test
+    working_space = os.path.realpath('./test_results')
+    os.makedirs(working_space, exist_ok=True)
+    for expected_file in [result_name, orthomosaic_mask_name]:
+        cur_path = os.path.join(working_space, expected_file)
+        if os.path.exists(cur_path):
+            os.unlink(cur_path)
+
+    command_line = [SOURCE_PATH, '--working_space', working_space, plain_tiff_image]
     subprocess.run(command_line, check=True)
 
     # Check that the expected files were created
