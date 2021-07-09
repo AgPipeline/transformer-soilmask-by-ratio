@@ -33,7 +33,7 @@ First build the Docker image, using the Dockerfile, and tag it agdrone/transform
 Read about the [docker build](https://docs.docker.com/engine/reference/commandline/build/) command if needed.
 
 ```bash
-docker build -t agdrone/transformer-soilmask-by-ratio:1.0 ./
+docker build -t agdrone/transformer-soilmask-by-ratio:1.2 ./
 ```
 
 There is one file needed for running the Docker image.
@@ -50,11 +50,11 @@ An explanation of the command line options used follows.
 Be sure to read up on the [docker run](https://docs.docker.com/engine/reference/run/) command line for more information.
 
 ```bash
-docker run --rm --mount "src=${PWD}/test_data,target=/mnt,type=bind" agdrone/transformer-soilmask-by-ratio:1.0 --ratio 1.25 --working_space "/mnt" "/mnt/orthomosaic.tif"
+docker run --rm --mount "src=${PWD}/test_data,target=/mnt,type=bind" agdrone/transformer-soilmask-by-ratio:1.2 --ratio 1.25 --working_space "/mnt" "/mnt/orthomosaic.tif"
 ```
 
 This example command line assumes the source files are located in the `test_data` folder off the current folder.
-The name of the image to run is `agdrone/transformer-soilmask-by-ratio:1.0`.
+The name of the image to run is `agdrone/transformer-soilmask-by-ratio:1.2`.
 
 We are using the same folder for the source files and the output files.
 By using multiple `--mount` options, the source and output files can be separated.
