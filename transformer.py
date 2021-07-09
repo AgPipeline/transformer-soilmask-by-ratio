@@ -204,7 +204,8 @@ class SoilmaskByRatio(algorithm.Algorithm):
         Return:
             Returns a dictionary with the results of processing
         """
-        # pylint: disable=unused-argument, no-self-use
+        # Disable pylint warnings that reduce readability
+        # pylint: disable=unused-argument, no-self-use, too-many-branches
         result = {}
         file_md = []
 
@@ -221,17 +222,14 @@ class SoilmaskByRatio(algorithm.Algorithm):
 
                 # Get the image's EPSG code
                 epsg = geoimage.get_epsg(one_file)
-                if epsg is None:
-                    logging.debug("Skipping image that is not georeferenced: '%s'", one_file)
-                    continue
+                if epsg is not None:
+                    # Get the bounds of the image to see if we can process it.
+                    bounds = geoimage.image_get_geobounds(one_file)
 
-                # Get the bounds of the image to see if we can process it.
-                bounds = geoimage.image_get_geobounds(one_file)
-
-                if bounds is None:
-                    logging.warning("Unable to get bounds of georeferenced image: '%s'",
-                                    os.path.basename(one_file))
-                    continue
+                    if bounds is None:
+                        logging.warning("Unable to get bounds of georeferenced image: '%s'",
+                                        os.path.basename(one_file))
+                        continue
 
                 # Get the mask name
                 if environment.args.out_file:
@@ -255,7 +253,10 @@ class SoilmaskByRatio(algorithm.Algorithm):
                 transformer_info = environment.generate_transformer_md()
 
                 image_md = __internal__.prepare_metadata_for_geotiff(transformer_info)
-                geoimage.create_geotiff(mask_rgb, bounds, rgb_mask_tif, epsg, None, False, image_md, compress=True)
+                if epsg:
+                    geoimage.create_geotiff(mask_rgb, bounds, rgb_mask_tif, epsg, None, False, image_md, compress=True)
+                else:
+                    geoimage.create_tiff(mask_rgb, rgb_mask_tif, None, False, image_md, compress=True)
 
                 transformer_md = {
                     'name': transformer_info['name'],
