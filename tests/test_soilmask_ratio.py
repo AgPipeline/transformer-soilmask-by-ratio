@@ -47,7 +47,7 @@ def test_prepare_metadata_for_geotiff():
     data_file_name = os.path.realpath(os.path.join(TESTING_FILE_PATH, 'prepare_metadata_for_geotiff.json'))
     assert os.path.exists(data_file_name)
 
-    with open(data_file_name, 'r') as in_file:
+    with open(data_file_name, 'r', encoding='utf-8') as in_file:
         test_data = json.load(in_file)
         test_data.append(None)
         for test in test_data:
@@ -89,7 +89,7 @@ def test_simple_line():
         assert os.path.exists(os.path.join(working_space, expected_file))
 
     # Inspect the created files
-    with open(os.path.join(working_space, result_name)) as in_file:
+    with open(os.path.join(working_space, result_name), encoding='utf-8') as in_file:
         res = json.load(in_file)
         assert 'code' in res
         assert res['code'] == 0
@@ -118,7 +118,7 @@ def test_outputfile_command_line():
         assert os.path.exists(os.path.join(working_space, expected_file))
 
     # Inspect the created files
-    with open(os.path.join(working_space, result_name)) as in_file:
+    with open(os.path.join(working_space, result_name), encoding='utf-8') as in_file:
         res = json.load(in_file)
         assert 'code' in res
         assert res['code'] == 0
@@ -148,7 +148,7 @@ def test_ratio_command_line():
         assert os.path.exists(os.path.join(working_space, expected_file))
 
     # Inspect the created files
-    with open(os.path.join(working_space, result_name)) as in_file:
+    with open(os.path.join(working_space, result_name), encoding='utf-8') as in_file:
         res = json.load(in_file)
         assert 'code' in res
         assert res['code'] == 0
@@ -190,7 +190,7 @@ def test_ratio_plain_tiff():
         assert os.path.exists(os.path.join(working_space, expected_file))
 
     # Inspect the created files
-    with open(os.path.join(working_space, result_name)) as in_file:
+    with open(os.path.join(working_space, result_name), encoding='utf-8') as in_file:
         res = json.load(in_file)
         assert 'code' in res
         assert res['code'] == 0
