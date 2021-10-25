@@ -7,7 +7,7 @@ import logging
 import os
 import numpy as np
 from osgeo import gdal
-import cv2
+from cv2 import cv2
 
 from agpypeline import algorithm, entrypoint, geoimage
 from agpypeline.environment import Environment
