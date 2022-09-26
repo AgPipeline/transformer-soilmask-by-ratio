@@ -7,7 +7,7 @@ import logging
 import os
 import numpy as np
 from osgeo import gdal
-from cv2 import cv2
+import cv2
 
 from agpypeline import algorithm, entrypoint, geoimage
 from agpypeline.environment import Environment
@@ -154,7 +154,6 @@ class SoilmaskByRatio(algorithm.Algorithm):
         Arguments:
             parser: instance of argparse
         """
-        # pylint: disable=no-self-use
         parser.add_argument('--out_file', type=str, help='the path to save the masked file to')
         parser.add_argument('--ratio', type=float, default=GREEN_RED_RATIO,
                             help='the lower bound decimal value of green-to-red ratio to be considered plant (eg: 0.75 or 1.2)' \
@@ -171,7 +170,7 @@ class SoilmaskByRatio(algorithm.Algorithm):
             Returns a tuple containing the return code for continuing or not, and
             an error message if there's an error
         """
-        # pylint: disable=unused-argument, no-self-use
+        # pylint: disable=unused-argument
         result = {'code': -1002, 'message': "No TIFF files were specified for processing"}
 
         # Ensure we have a TIFF file
@@ -205,7 +204,7 @@ class SoilmaskByRatio(algorithm.Algorithm):
             Returns a dictionary with the results of processing
         """
         # Disable pylint warnings that reduce readability
-        # pylint: disable=unused-argument, no-self-use, too-many-branches
+        # pylint: disable=unused-argument, too-many-branches
         result = {}
         file_md = []
 
